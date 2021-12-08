@@ -1,6 +1,7 @@
 #!/bin/bash
 ##########################################################################################
-# Bash skript který odinstaluje software nainstalovaný skriptem install.sh a odebere přidané repozitáře a klíče. A dále odstraní konfiguraci učiněnou skriptem configure.sh.
+# Bash skript který odinstaluje software nainstalovaný skriptem install.sh a odebere přidané repozitáře a klíče.
+# Dále odstraní konfiguraci učiněnou skriptem configure.sh.
 # Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
 # Testováno na Debian 11. 
 # Autor @AdamValtr
@@ -26,32 +27,35 @@ fi
 ##########################################################################################
 
 ################################## remove_install ########################################
-## Funkce odinstaluje InfluxDB a Grafana, odstraní jejich konfihurační soubory a odebere z apt jejich repozitáře a klíče.
+## Funkce odinstaluje InfluxDB a Grafana a odebere z apt jejich repozitáře a klíče.
 remove_install() {
-    sudo apt purge influxdb2 grafana
+    sudo apt purge -y influxdb2 grafana
     sudo rm /etc/apt/sources.list.d/influxdb.list && sudo rm /etc/apt/sources.list.d/grafana.list
     sudo rm /etc/apt/trusted.gpg.d/grafana.gpg && sudo rm /etc/apt/trusted.gpg.d/grafana.gpg
-    sudo rm -r /etc/grafana && sudo rm -r /etc/influx
+    sudo apt autoremove
 }
 ##########################################################################################
 
 ############################### remove_configuration #####################################
-## Funkce odstraní konfiguraci nasazenou confihure.sh
+## Funkce odstraní konfiguraci nasazenou confihure.sh.
 remove_configuration() {
-    return
+    sudo apt purge -y certbot
+    sudo rm -r /etc/grafana && sudo rm -r /etc/influxdb
+
 }
 ##########################################################################################
 
 ##################################### execute ############################################
 ## Fukce obálka - výčet funkcí (kroků), které budou provedeny.
 execute() {
+    os_check
     remove_install
     remove_configuration
 }
 ##########################################################################################
 
 ## Informace o skriptu
-echo "Tento skript odinstaluje databázový software InfluxDB a analytickou webovou platformu Grafana, odebere přidané repozitáře a klíče (kroky učiněné install.sh) a odstraní konfiguraci (kroky učiněné configuration.sh)."
+echo "Tento skript odinstaluje databázový software InfluxDB a analytickou webovou platformu Grafana, odebere přidané repozitáře a klíče (kroky učiněné install.sh) a odstraní konfiguraci (kroky učiněné configuration.sh). K ověření, zda je skript spouštěn na podporovaném OS, dochází v prvním kroku přečtením obsahu souboru /etc/os-release."
 
 ##  Souhlas se spuštěním
 echo "Přejete si pokračovat v exekuci skriptu ${0##*/}? (Zadejte '1' nebo '2' pro výběr možnosti)"

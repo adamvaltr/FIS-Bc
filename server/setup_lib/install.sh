@@ -79,8 +79,8 @@ else
     sudo apt install -y influxdb2
     if dpkg -l influxdb2; then
         sudo systemctl daemon-reload
-        sudo systemctl start influxdb
         sudo systemctl enable influxdb.service
+        sudo systemctl start influxdb
     else
         status_report ${FUNCNAME[0]} "Nezdařilo se nainstalovat influxDB."
     fi
@@ -114,8 +114,8 @@ else
     sudo apt install -y grafana
     if dpkg -l grafana; then
         sudo systemctl daemon-reload
-        sudo systemctl start grafana-server
         sudo systemctl enable grafana-server.service
+        sudo systemctl start grafana-server
     else
         status_report ${FUNCNAME[0]} "Nezdařilo se nainstalovat Grafana."
     fi

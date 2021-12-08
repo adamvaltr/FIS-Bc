@@ -1,0 +1,9 @@
+bolt-path = "/var/lib/influxdb/influxd.bolt"
+engine-path = "/var/lib/influxdb/engine"
+
+query-concurrency = 20
+query-queue-size = 15
+secret-store = "vault"
+session-length = 120
+tls-cert = "/etc/influxdb/fullchain.pem"
+tls-key = "/etc/influxdb/privkey.pem"
