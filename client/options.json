@@ -1,0 +1,4 @@
+{   "url"       : "https://bc.linode.valtr.eu:8086/api/v2/write?org=fis-bc&bucket=test&precision=s",
+    "token"     : "WVfLlr1G436e0KZDgx4fBFw65KkMa0USesJZurxXEFRx2vFDDfeU-SMAyU0_mIPNy8iDx20wKXrxRBGhUaIwQQ==",
+    "period"    : 1
+}
