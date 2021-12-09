@@ -1,0 +1,2 @@
+# Klient
+# Zasílá data serveru
