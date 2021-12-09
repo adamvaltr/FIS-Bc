@@ -1,4 +1,9 @@
-{   "url"       : "https://bc.linode.valtr.eu:8086/api/v2/write?org=fis-bc&bucket=test&precision=s",
-    "token"     : "WVfLlr1G436e0KZDgx4fBFw65KkMa0USesJZurxXEFRx2vFDDfeU-SMAyU0_mIPNy8iDx20wKXrxRBGhUaIwQQ==",
-    "period"    : 1
+{   "protocol"  : "https",
+    "domain"    : "bc.linode.valtr.eu",
+    "port"      : "8086",
+    "org"       : "fis-bc",
+    "bucket"    : "mve",
+    "precision" : "s",
+    "token"     : "W-ZdB0_B_2B6HRAm6ZIzdeMO6L5R4riQZZz9TuACJZ5Y2qxk4Iz2b852TwvtpcH2X5abUDJ1ARTd4OO2GcEfKQ==",
+    "period"    : 10
 }
