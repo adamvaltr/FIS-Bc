@@ -95,7 +95,7 @@ def change_temperature():
     for key in data_structure:                                      # Projde klíče ve slovníku
         if "teplotaCelsia" in data_structure[key]:                  # Ověří zda pro klíč existuje vnořený klíč
             _oldtemperature = data_structure[key]["teplotaCelsia"]  # Uloží stávající hodnotu pod klíčem
-            _tempchange = random.randrange(-1,1)                    # Náhodně vygeneruje změnu z daného rozmezí
+            _tempchange = random.randint(-1,1)                    # Náhodně vygeneruje změnu z daného rozmezí
             _newtemperature = sum([_oldtemperature, _tempchange])   # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
             data_structure[key]["teplotaCelsia"] = _newtemperature  # Uloží novou hodnotu pod klíčem
 ###############################################################################
@@ -105,7 +105,7 @@ def change_level():
     for key in data_structure:                                  # Projde klíče ve slovníku
         if "hladinaCm" in data_structure[key]:                  # Ověří zda pro klíč existuje vnořený klíč
             _oldlevel = data_structure[key]["hladinaCm"]        # Uloží stávající hodnotu pod klíčem
-            _lvlchange = random.randrange(-1,1)                 # Náhodně vygeneruje změnu z daného rozmezí
+            _lvlchange = random.randint(-1,1)                 # Náhodně vygeneruje změnu z daného rozmezí
             _newlevel = sum([_oldlevel, _lvlchange])            # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
             data_structure[key]["hladinaCm"] = _newlevel        # Uloží novou hodnotu pod klíčem
 ###############################################################################
@@ -115,7 +115,7 @@ def change_power():
     for key in data_structure:                                  # Projde klíče ve slovníku
         if "vykonkWh" in data_structure[key]:                   # Ověří zda pro klíč existuje vnořený klíč
             _oldpower = data_structure[key]["vykonkWh"]         # Uloží stávající hodnotu pod klíčem
-            _pwrchange = random.randrange(-2,2)                 # Náhodně vygeneruje změnu z daného rozmezí
+            _pwrchange = random.randint(-2,2)                 # Náhodně vygeneruje změnu z daného rozmezí
             _newpower = abs(sum([_oldpower, _pwrchange]))       # Sečte původní hodnotu a změnu. Použije absolutní hodnotu - výkon nemůže být záporný
             data_structure[key]["vykonkWh"] = _newpower         # Uloží novou hodnotu pod klíčem
 ###############################################################################
@@ -156,7 +156,7 @@ def iterate():
     data = line_data                                            # Vloží zformátovaná data
     ###############################################################################
 
-    resp = requests.post(url, headers=headers, data=data)       # Složí a odešle POST request serveru
+    requests.post(url, headers=headers, data=data)       # Složí a odešle POST request serveru
 ###############################################################################
 
 # Nekonečná smyčka - program bude dokola měnit data a odesílat je serveru jako POST request
