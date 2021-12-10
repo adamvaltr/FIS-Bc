@@ -178,6 +178,12 @@ init_influx() {
     influx auth create \
     --write-bucket $bucketid
     --description "API token pro klienta"
+
+    # Vytvoří API token Grafana
+    bucketid=$(influx bucket list --json -n mve | jq -r '.[].id')
+    influx auth create \
+    --read-bucket $bucketid
+    --description "API token pro Grafana"
     
     # Nasměruje Influx CLI na HTTPS
     influx config set -n default -u https://$domain:8086
