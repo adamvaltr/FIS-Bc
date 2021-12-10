@@ -95,8 +95,9 @@ def change_temperature():
     for key in data_structure:                                      # Projde klíče ve slovníku
         if "teplotaCelsia" in data_structure[key]:                  # Ověří zda pro klíč existuje vnořený klíč
             _oldtemperature = data_structure[key]["teplotaCelsia"]  # Uloží stávající hodnotu pod klíčem
-            _tempchange = random.randint(-1,1)                    # Náhodně vygeneruje změnu z daného rozmezí
-            _newtemperature = sum([_oldtemperature, _tempchange])   # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
+            _tempchange = random.randint(-1,1)                      # Náhodně vygeneruje změnu z daného rozmezí
+            _randtemperature = sum([_oldtemperature, _tempchange])  # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
+            _newtemperature = norm_value(_randtemperature, -5, 90)  # Normalizuje naměřenou hodnotu tak, aby byla v rozmezí předaném druhým a třetím parametrem. Zadané rozmezí ilustruje reálný svět.
             data_structure[key]["teplotaCelsia"] = _newtemperature  # Uloží novou hodnotu pod klíčem
 ###############################################################################
 
@@ -105,8 +106,9 @@ def change_level():
     for key in data_structure:                                  # Projde klíče ve slovníku
         if "hladinaCm" in data_structure[key]:                  # Ověří zda pro klíč existuje vnořený klíč
             _oldlevel = data_structure[key]["hladinaCm"]        # Uloží stávající hodnotu pod klíčem
-            _lvlchange = random.randint(-1,1)                 # Náhodně vygeneruje změnu z daného rozmezí
-            _newlevel = sum([_oldlevel, _lvlchange])            # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
+            _lvlchange = random.randint(-1,1)                   # Náhodně vygeneruje změnu z daného rozmezí
+            _randlevel = sum([_oldlevel, _lvlchange])           # Sečte původní hodnotu a změnu. Hladina může být záporná i kladná.
+            _newlevel = norm_value(_randlevel, -20, 20)         # Normalizuje naměřenou hodnotu tak, aby byla v rozmezí předaném druhým a třetím parametrem. Zadané rozmezí ilustruje reálný svět.
             data_structure[key]["hladinaCm"] = _newlevel        # Uloží novou hodnotu pod klíčem
 ###############################################################################
 
@@ -115,9 +117,25 @@ def change_power():
     for key in data_structure:                                  # Projde klíče ve slovníku
         if "vykonkWh" in data_structure[key]:                   # Ověří zda pro klíč existuje vnořený klíč
             _oldpower = data_structure[key]["vykonkWh"]         # Uloží stávající hodnotu pod klíčem
-            _pwrchange = random.randint(-2,2)                 # Náhodně vygeneruje změnu z daného rozmezí
-            _newpower = abs(sum([_oldpower, _pwrchange]))       # Sečte původní hodnotu a změnu. Použije absolutní hodnotu - výkon nemůže být záporný
+            _pwrchange = random.randint(-1,1)                   # Náhodně vygeneruje změnu z daného rozmezí
+            _randpower = sum([_oldpower, _pwrchange])           # Sečte původní hodnotu a změnu. Použije absolutní hodnotu - výkon nemůže být záporný
+            _newpower = norm_value(_randpower, 0, 60)           # Normalizuje naměřenou hodnotu tak, aby byla v rozmezí předaném druhým a třetím parametrem. Zadané rozmezí ilustruje reálný svět.
             data_structure[key]["vykonkWh"] = _newpower         # Uloží novou hodnotu pod klíčem
+###############################################################################
+
+# Normalizuje náhodně upravenou hodnotu měření, tak aby se pohybovala v rozmezí předaném jako parametry l a u.
+# n = hodnota měření
+# l = spodní hronice rozmezí
+# u = horní hranice rozmezí
+def norm_value (n, l, u):
+    if n in range(l, u):        # Pokud je n v rozmezí
+        return n                # Vrátí n
+    elif n >= u:                # Pokud je n větší nebo rovno horní hranici u
+        n = u                   # Zapíše u do n
+        return n                # Vrátí n
+    else:                       # Ostatní podmínky nesplněny, takže n musí být menší nebo rovno l
+        n = l                   # Zapíše l do n
+        return n                # Vrátí n
 ###############################################################################
 
 # Funkce obaluje jednotlivé funkce pro změnu různých typů dat, aby je nebylo nutné volat samostatně.
