@@ -179,8 +179,7 @@ init_influx() {
     --write-bucket $bucketid
     --description "API token pro klienta"
 
-    # Vytvoří API token Grafana
-    bucketid=$(influx bucket list --json -n mve | jq -r '.[].id')
+    # Vytvoří API token pro Grafana
     influx auth create \
     --read-bucket $bucketid
     --description "API token pro Grafana"

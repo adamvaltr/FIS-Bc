@@ -1,0 +1,1536 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "influxdb",
+      "pluginName": "InfluxDB"
+    }
+  ],
+  "__elements": [],
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "alertlist",
+      "name": "Alert list",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "bargauge",
+      "name": "Bar gauge",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "8.3.1"
+    },
+    {
+      "type": "datasource",
+      "id": "influxdb",
+      "name": "InfluxDB",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "piechart",
+      "name": "Pie chart",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Ukázkový dashboard",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 28,
+      "panels": [],
+      "title": "MVE",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 120,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 1
+      },
+      "id": 29,
+      "interval": "10s",
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"vykon\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Celkový výkon",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Celkový výkon",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}",
+                "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "mappings": [],
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 3,
+        "y": 1
+      },
+      "id": 33,
+      "options": {
+        "displayLabels": [
+          "value"
+        ],
+        "legend": {
+          "displayMode": "hidden",
+          "placement": "bottom",
+          "values": []
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-12-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"vykon\"\r\n  )\r\n  |> mean()",
+          "refId": "A"
+        }
+      ],
+      "title": "Průměrný výkon",
+      "transformations": [],
+      "transparent": true,
+      "type": "piechart"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "purple",
+            "mode": "fixed"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "purple",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 8,
+        "x": 7,
+        "y": 1
+      },
+      "id": 35,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "sum"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-12-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"vykon\"\r\n  )\r\n  |> aggregateWindow(every: 1h, fn: mean)",
+          "refId": "A"
+        }
+      ],
+      "title": "Kumulativní výroba",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Kumulativní výroba",
+            "mode": "reduceRow",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": true
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 15,
+        "y": 1
+      },
+      "id": 37,
+      "options": {
+        "alertName": "",
+        "dashboardAlerts": false,
+        "folder": {
+          "id": 2,
+          "title": "Alerts"
+        },
+        "maxItems": 20,
+        "showInstances": false,
+        "sortOrder": 4,
+        "stateFilter": {
+          "firing": true,
+          "inactive": false,
+          "pending": true
+        }
+      },
+      "title": "Upozornění",
+      "transparent": true,
+      "type": "alertlist"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 5,
+      "panels": [],
+      "title": "Aktuální stav TG1",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 60,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 10
+      },
+      "id": 2,
+      "interval": "10s",
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r.tag1 == \"TG1\" and\r\n    r.tag2 == \"vykon\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Výkon TG1",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 20,
+          "min": -20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 10
+      },
+      "id": 7,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny1\" and\r\n    r.tag1 == \"TG1\" and\r\n    r.tag2 == \"hladina\"\r\n  )\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Hladina nad TG1",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 20,
+          "min": -20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 10
+      },
+      "id": 8,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny2\" and\r\n    r.tag1 == \"TG1\" and\r\n    r.tag2 == \"hladina\"\r\n  )\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Hladina pod TG1",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "max": 90,
+          "min": -5,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 10
+      },
+      "id": 14,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merTeploty1\" and\r\n    r.tag1 == \"TG1\" and\r\n    r.tag2 == \"teplota\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Teplota ložiska generátoru TG1",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "max": 90,
+          "min": -5,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 10
+      },
+      "id": 15,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merTeploty2\" and\r\n    r.tag1 == \"TG1\" and\r\n    r.tag2 == \"teplota\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Teplota ložiska turbíny TG1",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Aktuální stav TG2",
+      "type": "row"
+    },
+    {
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 60,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 0,
+        "y": 17
+      },
+      "id": 3,
+      "interval": "10s",
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r.tag1 == \"TG2\" and\r\n    r.tag2 == \"vykon\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Výkon TG2",
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 20,
+          "min": -20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 3,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny3\" and\r\n    r.tag1 == \"TG2\" and\r\n    r.tag2 == \"hladina\"\r\n  )\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Hladina nad TG2",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "mappings": [],
+          "max": 20,
+          "min": -20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 17
+      },
+      "id": 12,
+      "options": {
+        "displayMode": "lcd",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "text": {}
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny4\" and\r\n    r.tag1 == \"TG2\" and\r\n    r.tag2 == \"hladina\"\r\n  )\r\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Hladina pod TG2",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "max": 90,
+          "min": -5,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 9,
+        "y": 17
+      },
+      "id": 16,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merTeploty3\" and\r\n    r.tag1 == \"TG2\" and\r\n    r.tag2 == \"teplota\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Teplota ložiska generátoru TG2",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlYlRd"
+          },
+          "mappings": [],
+          "max": 90,
+          "min": -5,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 12,
+        "y": 17
+      },
+      "id": 17,
+      "options": {
+        "displayMode": "gradient",
+        "orientation": "vertical",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: -20s)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merTeploty4\" and\r\n    r.tag1 == \"TG2\" and\r\n    r.tag2 == \"teplota\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Teplota ložiska turbíny TG2",
+      "transparent": true,
+      "type": "bargauge"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 23
+      },
+      "id": 21,
+      "panels": [],
+      "title": "Dlouhodobý přehled",
+      "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kwatth"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-12-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"vykon\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Výkon",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Celkový výkon",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "indexByName": {},
+            "renameByName": {
+              "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}": "Výkon TG1",
+              "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}": "Výkon TG2"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 34
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-01-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"hladina\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Hladina",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Součet hladin",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Celkový výkon": true,
+              "Součet hladin": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Time": "",
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina nad TG1",
+              "hladinaCm {name=\"merHladiny2\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina pod TG1",
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina nad TG2",
+              "hladinaCm {name=\"merHladiny4\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina pod TG2",
+              "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}": "Výkon TG1",
+              "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}": "Výkon TG2"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-red",
+                "value": null
+              },
+              {
+                "color": "super-light-green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 0,
+        "y": 44
+      },
+      "id": 25,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-01-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny1\" or\r\n    r._measurement == \"merHladiny3\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Průměrná hladina nad MVE",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Hladina nad MVE",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Celkový výkon": false,
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": true,
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Time": "",
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina nad TG1",
+              "hladinaCm {name=\"merHladiny2\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina pod TG1",
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina nad TG2",
+              "hladinaCm {name=\"merHladiny4\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina pod TG2",
+              "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}": "Výkon TG1",
+              "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}": "Výkon TG2"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "super-light-green",
+                "value": null
+              },
+              {
+                "color": "super-light-red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "cm"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      },
+      "id": 30,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-01-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r._measurement == \"merHladiny2\" or\r\n    r._measurement == \"merHladiny4\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Průměrná hladina pod MVE",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Hladina nad MVE",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "mean"
+            },
+            "replaceFields": true
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Celkový výkon": false,
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": true,
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": true
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Time": "",
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina nad TG1",
+              "hladinaCm {name=\"merHladiny2\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina pod TG1",
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina nad TG2",
+              "hladinaCm {name=\"merHladiny4\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina pod TG2",
+              "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}": "Výkon TG1",
+              "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}": "Výkon TG2"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "smooth",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "celsius"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 50
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "influxdb",
+            "uid": "${DS_INFLUXDB}"
+          },
+          "query": "from(bucket:\"mve\")\r\n  |> range(start: 2021-12-01T00:00:00Z)\r\n  |> filter(fn: (r) =>\r\n    r.tag2 == \"teplota\"\r\n  )",
+          "refId": "A"
+        }
+      ],
+      "title": "Teplota ložisek",
+      "transformations": [
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Součet teplot",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Celkový výkon": true,
+              "Součet teplot": true,
+              "Time": false
+            },
+            "indexByName": {},
+            "renameByName": {
+              "Time": "",
+              "hladinaCm {name=\"merHladiny1\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina nad TG1",
+              "hladinaCm {name=\"merHladiny2\", tag1=\"TG1\", tag2=\"hladina\"}": "Hladina pod TG1",
+              "hladinaCm {name=\"merHladiny3\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina nad TG2",
+              "hladinaCm {name=\"merHladiny4\", tag1=\"TG2\", tag2=\"hladina\"}": "Hladina pod TG2",
+              "teplotaCelsia {name=\"merTeploty1\", tag1=\"TG1\", tag2=\"teplota\"}": "Teplota ložiska generátoru TG1",
+              "teplotaCelsia {name=\"merTeploty2\", tag1=\"TG1\", tag2=\"teplota\"}": "Teplota ložiska turbíny TG1",
+              "teplotaCelsia {name=\"merTeploty3\", tag1=\"TG2\", tag2=\"teplota\"}": "Teplota ložiska generátoru TG2",
+              "teplotaCelsia {name=\"merTeploty4\", tag1=\"TG2\", tag2=\"teplota\"}": "Teplota ložiska generátoru TG2",
+              "vykonkWh {name=\"merVykonu1\", tag1=\"TG1\", tag2=\"vykon\"}": "Výkon TG1",
+              "vykonkWh {name=\"merVykonu2\", tag1=\"TG2\", tag2=\"vykon\"}": "Výkon TG2"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 33,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "FIS-Bc",
+  "uid": "HIMVALhnk",
+  "version": 6,
+  "weekStart": ""
+}
