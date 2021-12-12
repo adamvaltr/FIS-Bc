@@ -6,7 +6,7 @@ Tato část dokumentace popisuje CLI nástroj `setup.sh` sestrojený v `Bash`, c
 
 ## Použití
 
-Nástroj služí primárně k automatizaci instalace a konfigurace InfluxDD a Grafana, ale také umožňuje software, který byl v jeho průběhu nainstalován zase odinstalovat včetně nasazené konfigurace.
+Nástroj slouží primárně k automatizaci instalace a konfigurace InfluxDD a Grafana, ale také umožňuje software, který byl v jeho průběhu nainstalován zase odinstalovat včetně nasazené konfigurace.
 
 Spuštění nástroje je možné např. příkazem `bash setup.sh`. Pamatujte, že je při exekuci nutné se nacházet v adresáři `/server` a struktura podadresářů ani názvy souborů nesmí být změněny bez korespondujících změn ve zdrojových kódech - jinak odkazy mezi jednotlivýmí skripty nebudou fungovat.
 
@@ -20,13 +20,13 @@ Chování nástroje je možné upravit pomocí možností, které se skriptu př
 | `-c`     | nasadí konfiguraci softwarového vybavení pomocí setup_lib/install.sh                                |
 | `-r`     | odstraní nainstalovaný software a konfiguraci učiněné setup_lib/install.sh a setup_lib/configure.sh |
 
-Pokud dojde ke spuštění bez vlajky, dojde ke standardnímu průběh, který představuje instalaci a konfiguraci. Tento standardní průběh je totožný s použitím vlajek `-i` a `-c` dohromady - tedy `bash setup.sh -ic`.
+Pokud dojde ke spuštění bez vlajky, dojde ke standardnímu průběhu, který představuje instalaci a konfiguraci. Tento standardní průběh je totožný s použitím vlajek `-i` a `-c` dohromady - tedy `bash setup.sh -ic`.
 
 Uvede-li se vlajka, která není definována, program do příkazové řádky vytiskne zprávu, že takovou možnost nezná a skončí.
 
-Zahrnuje-li průběh nástroje spuštění podružných skriptů `configure.sh `, `install.sh` a `remove.sh` z podadresáře `/setup_lib`, dojde vždy k výzvě uživatele o potvrzení, zda si opravdu přeje pokračovat. Prvním krokem, který pak podružný skript učiní, je kontrola operařního systému hosta. Tato kontrola je důležitá, neboť zmíněné skripty přímo interagují se systémem a dělají v něm změny. Při exekuci na nepodporovaném systému by nebylo možné zaručit správné fungování skriptů a mohlo by způsobit něžádoucí změny. Kontrola se prování čtením obsahu `/etc/os-release` ve kterém se hledá fráze `debian`. Distribuce Linux Debian obsahuje `debian` pod klíčem `ID`. Distribuce založené na Debianu uvádí `debian` pod klíčem `ID_LIKE`. Pokud nedojde k úspěšnému splnění této kontroly, skript nebude pokračovat a ukončí se.
+Zahrnuje-li průběh nástroje spuštění podružných skriptů `configure.sh `, `install.sh` a `remove.sh` z podadresáře `/setup_lib`, dojde vždy k výzvě uživatele o potvrzení, zda si opravdu přeje pokračovat. Prvním krokem, který pak podružný skript učiní, je kontrola operačního systému hosta. Tato kontrola je důležitá, neboť zmíněné skripty přímo interagují se systémem a dělají v něm změny. Při exekuci na nepodporovaném systému by nebylo možné zaručit správné fungování skriptů a mohlo by způsobit něžádoucí změny. Kontrola se provádí čtením obsahu `/etc/os-release` ve kterém se hledá fráze `debian`. Distribuce Linux Debian obsahuje `debian` pod klíčem `ID`. Distribuce založené na Debianu uvádí `debian` pod klíčem `ID_LIKE`. Pokud nedojde k úspěšnému splnění této kontroly, skript nebude pokračovat a ukončí se.
 
-Nástroj komunikuje s uživatelem prostřednictvím příkazové řádky. V různých částech exekuce může být uživatel dotazován na potvrzení následného kroku formou souhlasu, či nesouhlasu, který je vždy reprezentován jako nabídka s volbami na kterou se odpovídá indexem volby.
+Nástroj komunikuje s uživatelem prostřednictvím příkazové řádky. V různých částech exekuce může být uživatel dotazován na potvrzení následného kroku formou souhlasu, či nesouhlasu, který je vždy reprezentován jako nabídka s volbami, na kterou se odpovídá indexem volby.
 
 Následující výpis kódu reprezentuje jednu takovou volbu. Jedná se o již zmiňovaný souhlas se spuštěním. Uživatel na něj může odpovědět zadáním `1` pro volbu `Ano` nebo `2` pro `Ne` a potvrdit klávesou `enter`.
 
@@ -40,7 +40,7 @@ select yn in "Ano" "Ne"; do
 done
 ```
 
-Dalším příkladem komunikace, při které je vyžadován uživatelský vstup, je žádost o zadání konkrétní hodnoty, která se má v daném kroku použít. Uživateli je nabídnuta přednastavená hodnota se kterou může buď souhlasit nebo jí změnit na hodnotu odpovídající jeho potřebám a prostředí. Pokud se rozhodne hodnotu změnit, učiní tak výběrem patřičné volby a následně vpíše do příkazové řádky novou hodnotu, která se má použít.
+Dalším příkladem komunikace, při které je vyžadován uživatelský vstup, je žádost o zadání konkrétní hodnoty, která se má v daném kroku použít. Uživateli je nabídnuta přednastavená hodnota, se kterou může buď souhlasit, nebo jí změnit na hodnotu odpovídající jeho potřebám a prostředí. Pokud se rozhodne hodnotu změnit, učiní tak výběrem patřičné volby a následně vpíše do příkazové řádky novou hodnotu, která se má použít.
 
 Pro ilustraci - ve výpisu kódu níže, je uživatel dotazován na nové heslo pro přihlášení do Grafana. Může se použít předvyplněné heslo a nebo heslo, které uživatel zadá. Nejdříve je nutné vybrat volbu zadáním `1` a potvrzením klávesou `enter`, poté je možné do příkazové řádky vepsat novou hodnotu a opět potvrdit klávesou `enter`.
 
@@ -79,7 +79,7 @@ Průběh skriptem řídí funkce `execute()`. Ta volá tyto ostatní funkce v po
 | Název funkce           | Popis                                                                                               |
 |------------------------|:----------------------------------------------------------------------------------------------------|
 | `os_check()`           | zkontroluje zda `/etc/os-release` obsahuje frázy `debian`                                           |
-| `package_update()`     | `apt` aktualizuje seznam dostupných balíčků a nainstaluje aktualizace - pokud k dispozici           |
+| `package_update()`     | `apt` aktualizuje seznam dostupných balíčků a nainstaluje aktualizace - pokud jsou k dispozici           |
 | `install_depend()`     | pokud nutno, nainstaluje nástroje nutné k úspěšné exekuci skriptu (`wget gpg apt-transport-https software-properties-common`) |
 | `add_influx_repo()`    | přidá repozitář InfluxDB a jeho veřejný klíč do zdrojů `apt`                                        |
 | `add_grafana_repo()`   | přidá repozitář Grafana a jeho veřejný klíč do zdrojů `apt`                                         |
@@ -91,7 +91,7 @@ Průběh skriptem řídí funkce `execute()`. Ta volá tyto ostatní funkce v po
 
 ## Skript `configure.sh`
 
-Tímto skriptem je výrazně zautomatizován proces nastavení InfluxDB a Grafana. Vytvoří databázi a připraví ji pro čtení a zápis na základě autorizace `API Tokeny`, změní defaulní hesla a dokáže obstarat `TLS` certifikát podepsaný Let's Encrypt, který umožní komunikaci s databází přes `HTTPS`.
+Tímto skriptem je výrazně zautomatizován proces nastavení InfluxDB a Grafana. Vytvoří databázi a připraví ji pro čtení a zápis na základě autorizace `API Tokeny`, změní defaultní hesla a dokáže obstarat `TLS` certifikát podepsaný Let's Encrypt, který umožní komunikaci s databází přes `HTTPS`.
 
 Mnoho kroků tohoto skriptu vyžaduje vstup od uživatele. Aby nebylo nutné dotazované hodnoty zadávat ručně, je možné je předvyplnit do proměnných ve zdrojovém kódu. Předvyplnitelné proměnné jsou:
 
@@ -118,7 +118,7 @@ Průběh skriptem řídí funkce `execute()`. Ta volá tyto ostatní funkce v po
 
 ### Konfigurační soubory InfluxDB `config.toml` a Grafana `grafana.ini`
 
-Upravuje nastavení databázového serveru InfluxDB platformy Grafana aby pro komunikaci používaly namísto `HTTP` zabezpečené `HTTPS` pomocí certifikátu a klíče od Let's Encrypt obstaraného pomocí `certbot`.
+Upravuje nastavení databázového serveru InfluxDB platformy Grafana, aby pro komunikaci používaly namísto `HTTP` zabezpečené `HTTPS` pomocí certifikátu a klíče od Let's Encrypt obstaraného pomocí `certbot`.
 
 Tyto soubory použije funkce `deploy_tls_config()` k nasazení `TLS`.
 
