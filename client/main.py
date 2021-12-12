@@ -1,11 +1,11 @@
 ###############################################################################
-# Python program, který simuluje chování klienta.
+# Python program, který simuluje chování klienta (MVE).
 # Generuje senzorová data a odesílá je do databázového serveru.
 # Používá konfigurační soubor options.json, který nese adresu databázového serveru,
 # údaje o cílové databázi, autorizační API Token a frekvenci se kterou se mají data
 # generovat a odesílat.
 # Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
-# Testováno na Debian 11. 
+# Testováno na Debian 11 s Python verze 3.9. 
 # Autor @AdamValtr
 ###############################################################################
 

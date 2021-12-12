@@ -1,4 +1,3 @@
-
 # Grafana
 
 Popis ukázkového dashboardu a upozornění v Grafana a jejich Flux dotazy do databáze.
@@ -7,7 +6,7 @@ Popis ukázkového dashboardu a upozornění v Grafana a jejich Flux dotazy do d
 
 Nedílnou součástí vypracovaného programového vybavení je Grafana Dashboard, který prezentuje a analyzuje data získávaná z implementované Influx databáze. Účelem tohoto dashboardu je nabídnout obsluze malé vodní elektrárny uživatelsky přívětivý způsob jak monitorovat senzorová data elektrárny a také nad daty automatizovaně provádět logické operace, jež dokáží vyhodnocovat, zda se elektrárna nenachází v kritickém nebo nestandardním stavu, a na takovou skutečnost obsluhu upozornit.
 
-Nastavení dashboardu předpokládá, že InfluxDB a v ní uložená data odpovídají implementaci z částí `Server` a `Client` tohoto programového vybavení. Nicméně lze šablonu upravit přímo v jejím zdrojovém kódu nebo v UI webové aplikace Grafana, aby vyhovovala vlastním potřebám odchylujícím se od předpracované konfigurace.
+Nastavení dashboardu předpokládá, že InfluxDB a v ní uložená data odpovídají implementaci z částí `Server` a `Klient` tohoto programového vybavení. Nicméně lze šablonu upravit přímo v jejím zdrojovém kódu nebo v UI webové aplikace Grafana, aby vyhovovala vlastním potřebám odchylujícím se od předpracované konfigurace.
 
 Pro import dashboardu do Grafana je nutné se nejprve přihlásit do webové aplikace. Pokud byl k instalaci a počáteční konfiguraci použit CLI nástroj ze `server/setup.sh`, pak má `URL` webové aplikace formát `https://[doména]:3000` a přihlašovací údaje odpovídají hodnotám, které uživatel uvedl v průběhu exekuce zmíněného skriptu. V opačném případě je v defaultním nastavení Grafana dostupná z `http://[IP]:3000`, kde `IP` je `IPv4` adresa serveru, kam byla Grafana nainstalována. Přihlašovací jméno a heslo je pak `admin`.
 
@@ -24,13 +23,15 @@ Naimportovat dashboard je možné navigací do `Create > Import > Upload JSON fi
 
 Nasazený a plně funkční dashboard na si lze prohlédnout na [https://bc.linode.valtr.eu:3000](https://bc.linode.valtr.eu:3000). Přihlašovací údaje pro uživatele s právy pouze na zobrazení (view-only) jsou `heslo: host` a `jméno: host`.
 
+------------
+
 ## Popis databáze
 
 - Databáze: `InfluxDB`
 - Organizace: `fis-bc`
 - Bucket: `mve`
 
-### Seznam měřidel
+### Seznam měření
 
 - `merVykonu1`
 - `merVykonu2`
