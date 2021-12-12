@@ -1,5 +1,7 @@
 # Grafana
 
+- Adresář: `/grafana`
+
 Popis ukázkového dashboardu a upozornění v Grafana a jejich Flux dotazy do databáze.
 
 ## Použití
@@ -8,7 +10,7 @@ Nedílnou součástí vypracovaného programového vybavení je Grafana Dashboar
 
 Nastavení dashboardu předpokládá, že InfluxDB a v ní uložená data odpovídají implementaci z částí `Server` a `Klient` tohoto programového vybavení. Nicméně lze šablonu upravit přímo v jejím zdrojovém kódu nebo v UI webové aplikace Grafana, aby vyhovovala vlastním potřebám odchylujícím se od předpracované konfigurace.
 
-Pro import dashboardu do Grafana je nutné se nejprve přihlásit do webové aplikace. Pokud byl k instalaci a počáteční konfiguraci použit CLI nástroj ze `server/setup.sh`, pak má `URL` webové aplikace formát `https://[doména]:3000` a přihlašovací údaje odpovídají hodnotám, které uživatel uvedl v průběhu exekuce zmíněného skriptu. V opačném případě je v defaultním nastavení Grafana dostupná z `http://[IP]:3000`, kde `IP` je `IPv4` adresa serveru, kam byla Grafana nainstalována. Přihlašovací jméno a heslo je pak `admin`.
+Pro import dashboardu do Grafana je nutné se nejprve přihlásit do webové aplikace. Pokud byl k instalaci a počáteční konfiguraci použit CLI nástroj ze `/server/setup.sh`, pak má `URL` webové aplikace formát `https://[doména]:3000` a přihlašovací údaje odpovídají hodnotám, které uživatel uvedl v průběhu exekuce zmíněného skriptu. V opačném případě je v defaultním nastavení Grafana dostupná z `http://[IP]:3000`, kde `IP` je `IPv4` adresa serveru, kam byla Grafana nainstalována. Přihlašovací jméno a heslo je pak `admin`.
 
 Dále je před samotným importem dashboardu nutné přidat datový zdroj. V tomto případě se jedná o InfluxDB. To lze provést navigací do `Configuration > Datasources > Add data source > InfluxDB`, kde je nutné zadat následující údaje o databázi (upravte pro Vaše prostředí):
 
@@ -19,7 +21,7 @@ Dále je před samotným importem dashboardu nutné přidat datový zdroj. V tom
 
 Naimportovat dashboard je možné navigací do `Create > Import > Upload JSON file`.
 
-Šablona dashboardu je k nalezení v `grafana/dashboard_template.json`
+Šablona dashboardu je k nalezení v `dashboard_template.json`
 
 Nasazený a plně funkční dashboard na si lze prohlédnout na [https://bc.linode.valtr.eu:3000](https://bc.linode.valtr.eu:3000). Přihlašovací údaje pro uživatele s právy pouze na zobrazení (view-only) jsou `heslo: host` a `jméno: host`.
 
@@ -159,7 +161,7 @@ Grafana získaná data o výkonu jednotlivých generátorů sečte sloučením �
 Panel koláčový graf, který zobrazuje průměrný výkon soustrojí jako podíl na celku v `kWh`.
 
 #### Flux dotaz
-Získá průměr všechn dat o výkonu od pevného datumu a vypočítá jejich průměr.
+Získá průměr všech dat o výkonu od pevného datumu a vypočítá jejich průměr.
 
 ```Flux
 from(bucket:"mve")
@@ -199,7 +201,7 @@ Grafana pro získaná agregovaná data přidá sloupec se součtem dat z řádku
 
 Panel upozornění zobrazuje seznam aktivních upozorněních s počítadlem, indikujícím, jak dlouho je již upozornění aktivní. Upozornění se řadí dle času aktivace - tedy nejaktuálnější upozornění se zobrazí v seznamu první.
 
-Smyslem upozornění je identifikovat neobvyklé nebo nebezpečné stavy elektrýrny a informovat o nich obsluhu, aby mohla situaci investigovat a případně zakročit.
+Smyslem upozornění je identifikovat neobvyklé nebo nebezpečné stavy elektrárny a informovat o nich obsluhu, aby mohla situaci investigovat a případně zakročit.
 
 #### Upozornění: Výkon
 
@@ -252,7 +254,7 @@ OR      avg()   of  B   IS BELOW    10
 
 #### Upozornění: Hladina
 
-Slouží k upozornění na stav elektrárny, kdy průměrná hladina reportovaná alespoň jednou sondou se vychílý z romezí `-10` až `10` centimetrů.
+Slouží k upozornění na stav elektrárny, kdy průměrná hladina reportovaná alespoň jednou sondou se vychýlí z rozmezí `-10` až `10` centimetrů.
 
 ##### Flux dotazy pro upozornění
 
@@ -556,7 +558,7 @@ from(bucket:"mve")
 
 ### Průměrná hladina nad MVE
 
-Panel stat zobrazuje průměrnou výšku hladiny nad oběma soustrojímy v `cm`. Pokud je průměrná hladina méně než `0` centimetrů, pak je panel červený, jinak je zelený.
+Panel stat zobrazuje průměrnou výšku hladiny nad oběma soustrojími v `cm`. Pokud je průměrná hladina méně než `0` centimetrů, pak je panel červený, jinak je zelený.
 
 #### Flux dotaz pro Průměrná hladina nad MVE
 
@@ -579,7 +581,7 @@ Grafana nejdříve sloučí řádky tabulky se stejnou časovou značkou a zprů
 
 ### Průměrná hladina pod MVE
 
-Panel stat zobrazuje průměrnou výšku hladiny pod oběma soustrojímy v `cm`. Pokud je průměrná hladina méně než `0` centimetrů, pak je panel zelený, jinak je červený. Tedy opak logiky panelu Průměrná hladina nad MVE, neboť pod soustrojímy se preferuje záporná hladina.
+Panel stat zobrazuje průměrnou výšku hladiny pod oběma soustrojími v `cm`. Pokud je průměrná hladina méně než `0` centimetrů, pak je panel zelený, jinak je červený. Tedy opak logiky panelu Průměrná hladina nad MVE, neboť pod soustrojími se preferuje záporná hladina.
 
 #### Flux dotaz pro Průměrná hladina pod MVE
 
@@ -602,7 +604,7 @@ Grafana nejdříve sloučí řádky tabulky se stejnou časovou značkou a zprů
 
 ### Teplota ložisek
 
-Panel časová řada, který zobrazuje teplotu ložisek generátorů a turbím v liniovém grafu. Na ose `X` je čas a na ose `Y` teplota ve stupňích Celsia. V grafu jsou tedy vykresleny čtyři linie, z nichž každá reprezentuje data z jedné teplotní sondy.
+Panel časová řada, který zobrazuje teplotu ložisek generátorů a turbín v liniovém grafu. Na ose `X` je čas a na ose `Y` teplota ve stupních Celsia. V grafu jsou tedy vykresleny čtyři linie, z nichž každá reprezentuje data z jedné teplotní sondy.
 
 #### Flux dotaz pro Teplota ložisek
 

@@ -61,7 +61,7 @@ done
 ##################################### ask_domain #########################################
 ## Funkce se zeptá na správnost použité domény.
 ask_domain() {
-    echo "Je toto vaše doména (doména pro kterou byl/bude vygenerován certifikát)?"
+    echo "Je toto vaše doména (doména pro použití s certifikátem)?"
     echo "Doména: $domain"
     select yn in "Ano" "Ne"; do
         case $yn in
@@ -72,9 +72,9 @@ ask_domain() {
 }
 ##########################################################################################
 
-##################################### CERTBOT a SSL ######################################
+##################################### CERTBOT a TLS ######################################
 ################################### setup_certbot ########################################
-## Funkce nainstaluje certbot - pokud není nainstalován. Certbot obstará SSL certifikáty od Let's Encrypt pro zajištění HTTPS. Poté se certifikáty zkopírují do příslušných adresářů a nstaví se patřičná oprávnění.
+## Funkce nainstaluje certbot - pokud není nainstalován. Certbot obstará TLS certifikáty od Let's Encrypt pro zajištění HTTPS. Poté se certifikáty zkopírují do příslušných adresářů a nstaví se patřičná oprávnění.
 setup_certbot() {
 if ! dpkg -l cerbot > /dev/null; then
     sudo apt install -y certbot
@@ -102,21 +102,21 @@ fi
 ##########################################################################################
 
 ################################## use_certbot ###########################################
-## Funkce se zeptá uživatele, zda chce použít cerbot k obstarání SSL certifikátů. 
+## Funkce se zeptá uživatele, zda chce použít cerbot k obstarání TLS certifikátů. 
 use_certbot() {
 echo "Chcete použít certbot? (Zadejte '1' nebo '2' pro výběr možnosti)"
 select yn in "Ano" "Ne"; do
     case $yn in
         Ano ) setup_certbot; break;;
-        Ne ) echo "Cerbot nebyl použit k získání SSL certifikátů."; break;;
+        Ne ) echo "Cerbot nebyl použit k získání TLS certifikátů."; break;;
     esac
 done
 }
 ##########################################################################################
 
-################################## deploy_ssl_config #####################################
-## Funkce zazálohuje defaultní konfiguraci InfluxDB a Grafana a nasadí konfiguraci povolující SSL s certifikáty v adresářích /etc/influxdb a /etc/grafana.
-deploy_ssl_config() {
+################################## deploy_tls_config #####################################
+## Funkce zazálohuje defaultní konfiguraci InfluxDB a Grafana a nasadí konfiguraci povolující TLS s certifikáty v adresářích /etc/influxdb a /etc/grafana.
+deploy_tls_config() {
 
     # InfluxDB
     export INFLUXD_CONFIG_PATH=/etc/influxdb
@@ -129,7 +129,7 @@ deploy_ssl_config() {
     if curl -s --head  --request GET https://$domain:8086 > /dev/null; then 
         echo "InfluxDB je dostupná na https://$domain:8086."
     else
-        status_report ${FUNCNAME[0]} "Nezdařilo nasadit SSL pro InfluxDB."
+        status_report ${FUNCNAME[0]} "Nezdařilo nasadit TLS pro InfluxDB."
     fi
 
     # Grafana
@@ -142,14 +142,14 @@ deploy_ssl_config() {
     if curl -s --head  --request GET https://$domain:3000 > /dev/null; then 
         echo "Grafana je dostupná na https://$domain:3000."
     else
-        status_report ${FUNCNAME[0]} "Nezdařilo nasadit SSL pro Grafana."
+        status_report ${FUNCNAME[0]} "Nezdařilo nasadit TLS pro Grafana."
     fi
 }
 ##########################################################################################
 
 ###################################### InfluxDB ##########################################
 #################################### init_influx #########################################
-## Funkce spustí proces prvotního nastavení InfluxDB, ve kterém dojde si uživatel nastaví uživatelské jméno, heslo, organizaci a tzv. kbelík (bucket) pro data.
+## Funkce spustí proces prvotního nastavení InfluxDB, ve kterém si uživatel nastaví uživatelské jméno, heslo, organizaci a tzv. kbelík (bucket) pro data.
 init_influx() {
     echo "Průvodce prvotním nastavením InfluxDB. Po uživately bude vyžadováno nastavení uživatelského jména, hesla, organizace a tzv. kbelíku (bucket) pro data."
     echo "Toto jsou hodnoty, které budou použity:"
@@ -214,7 +214,7 @@ execute() {
     init_grafana
     ask_domain
     use_certbot
-    deploy_ssl_config
+    deploy_tls_config
 }
 ##########################################################################################
 

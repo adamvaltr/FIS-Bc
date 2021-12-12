@@ -1,6 +1,6 @@
 # Dokumentace k programovému vybavení
 
-Tento dokument obsahuje dokumentaci programového vybavení jež je součástí bakalářské práce Adama Valtra na téma Řízení malé vodní elektrárny vypracované v roce 2021 na Fakultě informatiky a statistiky Vysoké školy ekonomické v Praze.
+Tento dokument obsahuje dokumentaci programového vybavení, jež je součástí bakalářské práce Adama Valtra na téma Řízení malé vodní elektrárny vypracované v roce 2021 na Fakultě informatiky a statistiky Vysoké školy ekonomické v Praze.
 
 Vypracované programové vybavení zahrnuje CLI nástroj napsaný v `Bash Shell`, který na systému s Linux Debian nebo distribuci z něj odvozenou dokáže nainstalovat, nakonfigurovat nebo odinstalovat databázový server InfluxDB a webovou analytickou a vizualizační platformu Grafana tak, aby klientské zařízení (v tomto případě MVE) mohlo odesílat svá senzorová data na server přes zabezpečené `HTTPS`, a tato data byla dostupná pro následnou analýzu a vizualizaci v Grafana.
 
@@ -9,6 +9,8 @@ Dalším článkem programového vybavení je program v jazyce `Python`, který 
 Vypracované programové vybavení také zahrnuje šablonu dashboardu Grafana, jenž obsahuje přednastavené panely a upozornění pro vizualizaci a analýzu dat získávaných z implementované databáze.
 
 Celý soubor programového vybavení tedy funguje jako celek a jeho jednotlivé části se navzájem doplňují.
+
+Při popisu cesty k jednotlivým částem softwarového vybavení se za kořenový adresář `/` považuje `FIS-Bc` - pokud není uvedeno jinak, cesty jsou uváděny relativně k němu.
 
 ## Členění dokumentace
 

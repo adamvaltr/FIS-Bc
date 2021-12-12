@@ -36,15 +36,14 @@ POPIS
               Zobrazí tento manuál
  
        -i
-              Nainstaluje softwarové vybavení (více informací v lib/install.sh)
+              Nainstaluje softwarové vybavení pomocí setup_lib/install.sh
 
        -c
-              Nasadí konfiguraci softwarového vybavení
-              (více informací v lib/configure.sh)
+              Nasadí konfiguraci softwarového vybavení pomocí setup_lib/install.sh
 
        -r
-              Odstraní nainstalovaný software a konfiguraci učiněné lib/install.sh
-              a lib/configure.sh (více informací v lib/remove.sh)
+              Odstraní nainstalovaný software a konfiguraci učiněné
+              setup_lib/install.sh a setup_lib/configure.sh
 
 "
 }

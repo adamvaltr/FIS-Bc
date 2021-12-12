@@ -1,27 +1,29 @@
 # Klient
 
-Popis programu v napsaného v jazyce `Python`, který slouží ke generování a odesílání dat do databázového serveru pomocí `HTTP POST` požadavků.
+- Adresář: `/client`
+
+Popis programu napsaného v jazyce `Python`, který slouží ke generování a odesílání dat do databázového serveru pomocí `HTTP POST` požadavků.
 
 ## Použití
 
 Program je zamýšlen jako generátor dat, běžící v nekonečné smyčce na zařízení s přístupem k internetu, aby mohl vygenerovaná data v patřičném formátu odesílat na `API` databázového serveru.
 
-Program se spouští bez argumentů, např. příkazem `python3 main.py`. Součástí programu je konfigurační soubor `options.json`, který musí být nutně umístěn ve stejném adresáři, jako samotný program. Před samotným spuštěním programu by měl uživatel upravit konfigurační soubor, aby odpovídal jeho specifickým podmínkám.
+Program se spouští bez argumentů, např. příkazem `python3 main.py`. Součástí programu je konfigurační soubor `options.json`, který musí být nutně umístěn ve stejném adresáři jako samotný program. Před samotným spuštěním programu by měl uživatel upravit konfigurační soubor, aby odpovídal jeho specifickým podmínkám.
 
 ### Konfigurační soubor
 
-Tento soubor je načten při spuštění programu `main.py`. Názvy jednotlivých klíčů není možné změnit bez korespondující změny ve zdrojovém kódu programu - jinak program nebude fungovat. Pokud neplánujete měnit samotný program, upravujte pouze hodnoty pod klíči.
+Tento soubor je načten při spuštění programu `main.py`. Názvy jednotlivých klíčů není možné změnit bez korespondující změny ve zdrojovém kódu programu - jinak program nebude fungovat. Pokud neplánujete měnit samotný program, upravujte pouze hodnoty pod klíči. Dostupná nastavení jsou:
 
-Dostupná nastavení:
-
-- `protocol`    :   http nebo https,
-- `domain`      :   doménové jméno směřující na adresu Vaší InfluxDB instance. Lze zadat přímo `IPv4` adresu,
-- `port`        :   `TCP/IP` port na kterém je InfluxDB dostupná. Defaulně `8086`,
-- `org`         :   název organizace, který byl zadán při tvorbě databáze,
-- `bucket`      :   název kbelíku, který byl zadán při tvorbě databáze,
-- `precision`   :   přesnost s jakou databáze k příchozím datům přiřadí časovou značku (`us, ns, ms, s`),
-- `token`       :   `API Token` autorizující klienta k zápisu do uvedeného kbelíku databáze,
-- `period`      :   čas v sekundách definující prodlevu mezi iteracemi generování a odesílání dat.
+| Nastavení     | Popis                                                                                         |
+|---------------|-----------------------------------------------------------------------------------------------|
+| `protocol`    |   http nebo https                                                                             |
+| `domain`      |   doménové jméno směřující na adresu Vaší InfluxDB instance. Lze zadat přímo `IPv4` adresu    |
+| `port`        |   `TCP/IP` port na kterém je InfluxDB dostupná. Defaultně `8086`                              |
+| `org`         |   název organizace, který byl zadán při tvorbě databáze                                       |
+| `bucket`      |   název kbelíku, který byl zadán při tvorbě databáze                                          |
+| `precision`   |   přesnost s jakou databáze k příchozím datům přiřadí časovou značku (`us, ns, ms, s`)        |
+| `token`       |   `API Token` autorizující klienta k zápisu do uvedeného kbelíku databáze                     |
+| `period`      |   čas v sekundách definující prodlevu mezi iteracemi generování a odesílání dat               |
 
 ### Spuštění
 
@@ -43,7 +45,7 @@ Použité balíčky:
 
 ### Práce s daty
 
-Data, která se odesílají do databáze jsou popsána slovníkem `data_structure`. Tyto data představují ilustrativní senzory, kterými bývají běžně osazeny malé vodní elektrárny. Jsou to měřídla výkonu generátorů, hladinové sondy a teplotní čidla. Slovník obsahuje celkem deset sond - dvě měřidla výkonu, čtyři hladinové sondy a čtyři teplotní čidla. Myšlená MVE, kterou se data snaží ilustrovat, je osazena dvěma turbínovými soustrojímy. Na každé soustrojí tak připadají jedno měřidlo výkonu, dvě hladinové sondy a dvě teplotní čídla.
+Data, která se odesílají do databáze jsou popsána slovníkem `data_structure`. Tato data představují ilustrativní senzory, kterými bývají běžně osazeny malé vodní elektrárny. Jsou to měřídla výkonu generátorů, hladinové sondy a teplotní čidla. Slovník obsahuje celkem deset sond - dvě měřidla výkonu, čtyři hladinové sondy a čtyři teplotní čidla. Myšlená MVE, kterou se data snaží ilustrovat, je osazena dvěma turbínovými soustrojími. Na každé soustrojí tak připadá jedno měřidlo výkonu, dvě hladinové sondy a dvě teplotní čidla.
 
 Každy senzor je ve slovníku reprezentován klíčem. Hodnotou každého klíče je pak vnořený slovník, který obsahuje dva tagy a měřenou hodnotu typu `integer`. Tagy určují k jakému soustrojí daný senzor patří a o jaký typ senzoru se jedná.
 
@@ -71,7 +73,7 @@ Každy senzor je ve slovníku reprezentován klíčem. Hodnotou každého klíč
 - `hladinaCm`
 - `teplotaCelsia`
 
-Aby docházelo ke změně měřených hodnot a do databáze se dokola nezapisovala stejná data, jsou v každé iteraci volány funkce `change_temperature()`, `change_level()` a `change_power()`. Tyto funkce náhodně změní hodnotu daného měření z předchozí iterace o `integer` z rozmezí `<-1;1>`. Jelikož by takto náhodně upravované data mohly nabývat hodnot, která by v kontextu ilustrace reálné MVE byly nesmyslné, volá se po každé změně funkce `norm_value()`, která zaručuje, že se hodnoty měření nevychýlí z přednastavených rozmezí. Rozmezí pro jednotlivé typy měření jsou uvedeny v následující tabulce.
+Aby docházelo ke změně měřených hodnot a do databáze se dokola nezapisovala stejná data, jsou v každé iteraci volány funkce `change_temperature()`, `change_level()` a `change_power()`. Tyto funkce náhodně změní hodnotu daného měření z předchozí iterace o `integer` z rozmezí `<-1;1>`. Jelikož by takto náhodně upravovaná data mohla nabývat hodnot, která by v kontextu ilustrace reálné MVE byla nesmyslná, volá se po každé změně funkce `norm_value()`, která zaručuje, že se hodnoty měření nevychýlí z přednastavených rozmezí. Rozmezí pro jednotlivé typy měření jsou uvedeny v následující tabulce.
 
 | Název hodnoty  | Rozmezí   |
 |----------------|----------:|
