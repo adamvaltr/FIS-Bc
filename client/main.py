@@ -4,9 +4,9 @@
 # Používá konfigurační soubor options.json, který nese adresu databázového serveru,
 # údaje o cílové databázi, autorizační API Token a frekvenci se kterou se mají data
 # generovat a odesílat.
-# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
+# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze na téma Řízení malé vodní elektrárny.
 # Testováno na Debian 11 s Python verze 3.9. 
-# Autor @AdamValtr
+# Autor @AdamValtr @2021
 ###############################################################################
 
 import requests, json, random, time

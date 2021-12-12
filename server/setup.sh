@@ -1,9 +1,9 @@
 #!/bin/bash
 ###############################################################################
 # Bash skript k nasazení softwarového vybavení serveru.
-# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
+# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze na téma Řízení malé vodní elektrárny.
 # Testováno na Debian 11. 
-# Autor @AdamValtr
+# Autor @AdamValtr @2021
 ###############################################################################
 
 TITLE="Nasazení softwarového vybavení"                                # Název

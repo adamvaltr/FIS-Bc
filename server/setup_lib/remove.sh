@@ -2,9 +2,9 @@
 ##########################################################################################
 # Bash skript který odinstaluje software nainstalovaný skriptem install.sh a odebere přidané repozitáře a klíče.
 # Dále odstraní konfiguraci učiněnou skriptem configure.sh.
-# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
+# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze na téma Řízení malé vodní elektrárny.
 # Testováno na Debian 11. 
-# Autor @AdamValtr
+# Autor @AdamValtr @2021
 ##########################################################################################
 
 ################################## status_report #########################################

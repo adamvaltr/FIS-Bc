@@ -1,9 +1,9 @@
 #!/bin/bash
 ##########################################################################################
 # Bash skript k instalaci softwarového vybavení serveru (InfliuxDB a Grafana)
-# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
+# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze na téma Řízení malé vodní elektrárny.
 # Testováno na Debian 11. 
-# Autor @AdamValtr
+# Autor @AdamValtr @2021
 ##########################################################################################
 
 ################################## status_report #########################################

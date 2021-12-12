@@ -5,9 +5,9 @@
 # Pokud však uživatel nemá opodstatněné důvody ke změnám - tento skript nasadí plně funkční konfiguraci
 # v rozsahu který odpovídám potřebám softwarového vybavení pro bakalářskou práci jejíž je tento software součástí.
 # Uživatel bude v průběhu skrze CLI dotazován na doplnění hodnot unikátních pro každé nasazení.
-# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze.
+# Zpracováno jako součást bakalářské práce na FIS VŠE v Praze na téma Řízení malé vodní elektrárny.
 # Testováno na Debian 11. 
-# Autor @AdamValtr
+# Autor @AdamValtr @2021
 ##########################################################################################
 
 domain=example.com # Proměnná pro doménu. Je možné změnit ručně v průběhu exekuce.
